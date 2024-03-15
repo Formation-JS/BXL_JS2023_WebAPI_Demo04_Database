@@ -6,9 +6,21 @@ import express from 'express';
 import 'express-async-errors';
 import mainRouter from './routes/index.js';
 import morgan from 'morgan';
+import db from './models/index.js';
 
 //! Variables d'env
 const { NODE_ENV, PORT } = process.env;
+
+//! Database
+//* Authentification vers la DB
+db.sequelize.authenticate()
+    .then(() => console.log('Connexion to DB - Success'))
+    .catch((error) => console.log('Connexion to DB - Error\n', error));
+
+//* Synchronisation des models et de la DB (NODE_ENV -> dev)
+if(NODE_ENV === 'dev') {
+    db.sequelize.sync();
+}
 
 //! Web API
 //* Initialisation
