@@ -1,4 +1,4 @@
-import { MovieDataDTO } from '../dto/movie.dto.js';
+import { MovieDataDTO, MovieDetailDTO } from '../dto/movie.dto.js';
 import db from '../models/index.js';
 
 const movieService = {
@@ -36,6 +36,25 @@ const movieService = {
 
         // Mapping des données avec le DTO
         return new MovieDataDTO({ ...movieCreated.dataValues, genre: genreSelected.name})
+    },
+
+    getById : async (movieId) => {
+
+        const movie = await db.Movie.findByPk(movieId, {
+            include: [
+                { model: db.Genre }
+            ]
+        });
+
+        // Mapping du resultat vers le DTO
+        return new MovieDetailDTO({
+            id: movie.id,
+            title: movie.title,
+            releaseYear: movie.releaseYear,
+            duration: movie.duration,
+            hasSubtitle: movie.hasSubtitle,
+            genre: movie.genre?.name
+        });
     }
 };
 

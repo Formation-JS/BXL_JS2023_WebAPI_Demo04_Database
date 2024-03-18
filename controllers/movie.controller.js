@@ -3,7 +3,17 @@ import movieService from '../services/movie.service.js';
 const movieController = {
 
     getOne: async (req, res) => {
-        res.sendStatus(501);
+        const movieId = parseInt(req.params.id);
+
+        const movie = await movieService.getById(movieId);
+
+        if(!movie) {
+            res.sendStatus(404);
+            return;
+        }
+
+        res.status(200)
+            .json(movie);
     },
 
     getAll: async (req, res) => {
