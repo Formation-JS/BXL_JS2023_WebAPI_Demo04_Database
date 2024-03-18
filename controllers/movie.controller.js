@@ -1,3 +1,5 @@
+import movieService from '../services/movie.service.js';
+
 const movieController = {
 
     getOne: async (req, res) => {
@@ -9,7 +11,11 @@ const movieController = {
     },
 
     create: async (req, res) => {
-        res.sendStatus(501);
+        const movie = await movieService.add(req.validateData);
+
+        res.status(201)
+            .location('/api/movie/' + movie.id)
+            .json(movie);
     },
 
     update: async (req, res) => {

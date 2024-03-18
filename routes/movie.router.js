@@ -1,17 +1,19 @@
 import { Router } from 'express';
 import movieController from '../controllers/movie.controller.js';
+import { bodyValidatorMiddleware } from '../middlewares/body-validator.middleware.js';
+import { movieValidator } from '../validators/movie.validator.js';
 
 
 const movieRouter = Router();
 
 movieRouter.route('/')
     .get(movieController.getAll)
-    .post(movieController.create)
+    .post(bodyValidatorMiddleware(movieValidator), movieController.create)
     .all((_, res) => res.sendStatus(405));
 
 movieRouter.route('/:id([0-9]+)')
     .get(movieController.getOne)
-    .put(movieController.update)
+    .put(bodyValidatorMiddleware(movieValidator), movieController.update)
     .delete(movieController.delete)
     .all((_, res) => res.sendStatus(405));
 
