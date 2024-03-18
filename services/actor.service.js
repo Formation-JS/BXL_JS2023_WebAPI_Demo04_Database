@@ -1,4 +1,4 @@
-import { ActorDTO } from '../dto/actor.dto.js';
+import { ActorDTO, ActorListDTO } from '../dto/actor.dto.js';
 import db from '../models/index.js';
 
 const actorService = {
@@ -11,6 +11,19 @@ const actorService = {
     getById: async (actorId) => {
         const actor = await db.Actor.findByPk(actorId)
         return !!actor ? new ActorDTO(actor) : null;
+    },
+
+    getAll: async (offset, limit) => {
+
+        const { rows, count } =  await db.Actor.findAndCountAll({
+            offset,
+            limit
+        });
+
+        return {
+            count,
+            actors: rows.map(r => new ActorListDTO(r))
+        };
     }
 
 

@@ -7,3 +7,10 @@ export class ActorDTO {
         this.birthdate = birthdate;
     }
 }
+
+export class ActorListDTO {
+    constructor({id, firstname, lastname}) {
+        this.id = id;
+        this.name = firstname + ' ' + lastname;
+    }
+}

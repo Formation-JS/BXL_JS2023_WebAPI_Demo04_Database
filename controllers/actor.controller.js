@@ -3,8 +3,7 @@ import actorService from '../services/actor.service.js';
 const actorController = {
 
     getOne: async (req, res) => {
-        // TODO Récuperer l'id via l'url
-        const actorId = 1;
+        const actorId = parseInt(req.params.id);
         
         const actor = await actorService.getById(actorId);
 
@@ -18,14 +17,18 @@ const actorController = {
     },
 
     getAll: async (req, res) => {
-        res.sendStatus(501);
+        const {offset, limit} = req.pagination;
+        const data = await actorService.getAll(offset, limit);
+
+        res.status(200)
+            .json({
+                count: data.count,
+                results: data.actors
+            });
     },
     
     create: async (req, res) => {
-        // TODO Récuperer des données via le body de la requete
-        const data = { firstname: 'Della', lastname: 'Duck', birthdate: '1988-12-03' }
-
-        const actor = await actorService.add(data);
+        const actor = await actorService.add(req.validateData);
 
         res.status(201)
            .location('/api/actor/'+actor.id)
