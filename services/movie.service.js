@@ -55,6 +55,28 @@ const movieService = {
             hasSubtitle: movie.hasSubtitle,
             genre: movie.genre?.name
         });
+    },
+
+    addActor : async (movieId, actorId) => {
+
+        // Récuperation du film
+        const movie = await db.Movie.findOne({
+            where: { id: movieId }
+        });
+        if(!movie) {
+            throw new Error('Movie not found');
+        }
+
+        // Récuperation de l'acteur
+        const actor = await db.Actor.findOne({
+            where: { id : actorId }
+        });
+        if(!actor) {
+            throw new Error('Actor not found');
+        }
+
+        // Ajout du lien "Many to Many" entre les 2 entitès
+        await movie.addActor(actor);
     }
 };
 
