@@ -26,6 +26,7 @@ export default (sequelize) => {
     }, {
         //? Permet de customiser le nom dans la DB
         tableName: 'Genre',
+        timestamps: false
     });
 
     // Return du model "Genre"
