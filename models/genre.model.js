@@ -8,7 +8,7 @@ import { Sequelize, DataTypes } from 'sequelize';
 export default (sequelize) => {
 
     // Défine model "Genre"
-    const Genre = sequelize.define('Genre', {
+    const Genre = sequelize.define('genre', {
         // Attributes -> Column of table
         // ? Note : Si la clef primaire n'est pas définie, celle est auto-généré
         id: {
@@ -25,7 +25,7 @@ export default (sequelize) => {
         }
     }, {
         //? Permet de customiser le nom dans la DB
-        tableName: 'Genre',
+        tableName: 'genre',
         timestamps: false
     });
 

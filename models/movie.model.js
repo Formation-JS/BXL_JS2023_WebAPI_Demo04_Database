@@ -7,7 +7,7 @@ import { Sequelize, DataTypes } from 'sequelize';
  */
 export default (sequelize) => {
 
-    const Movie = sequelize.define('Movie', {
+    const Movie = sequelize.define('movie', {
         // Attributes
         title: {
             type: DataTypes.STRING,
@@ -28,7 +28,7 @@ export default (sequelize) => {
         } 
     }, {
         // Model options
-        tableName: 'Movie',
+        tableName: 'movie',
         timestamps: true
     });
 

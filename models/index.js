@@ -38,8 +38,8 @@ db.Genre.hasMany(db.Movie, {
 db.Movie.belongsTo(db.Genre);
 
 //? [Many to Many] Actor - Movie
-db.Movie.belongsToMany(db.Actor, { through: 'Movie_Actor' });
-db.Actor.belongsToMany(db.Movie, { through: 'Movie_Actor' });
+db.Movie.belongsToMany(db.Actor, { through: 'movie_actor' });
+db.Actor.belongsToMany(db.Movie, { through: 'movie_actor' });
 
 //* Export de l'objet DB
 export default db;
