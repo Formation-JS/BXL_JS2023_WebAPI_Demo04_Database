@@ -1,3 +1,4 @@
+import { ActorListDTO } from '../dto/actor.dto.js';
 import { MovieDataDTO, MovieDetailDTO } from '../dto/movie.dto.js';
 import db from '../models/index.js';
 
@@ -42,7 +43,8 @@ const movieService = {
 
         const movie = await db.Movie.findByPk(movieId, {
             include: [
-                { model: db.Genre }
+                { model: db.Genre },
+                { model: db.Actor }
             ]
         });
 
@@ -53,7 +55,8 @@ const movieService = {
             releaseYear: movie.releaseYear,
             duration: movie.duration,
             hasSubtitle: movie.hasSubtitle,
-            genre: movie.genre?.name
+            genre: movie.genre?.name,
+            actors: movie.actors.map(a => new ActorListDTO(a))
         });
     },
 

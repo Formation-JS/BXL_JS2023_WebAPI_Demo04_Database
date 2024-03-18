@@ -12,13 +12,13 @@ export class MovieDataDTO {
 
 export class MovieDetailDTO {
 
-    constructor({ id, title, releaseYear, duration, hasSubtitle, genre }) {
+    constructor({ id, title, releaseYear, duration, hasSubtitle, genre, actors }) {
         this.id = id
         this.title = title
         this.releaseYear = releaseYear
         this.duration = duration
         this.hasSubtitle = hasSubtitle
         this.genre = genre
-        // TODO : Add Actors
+        this.actors = actors
     }
 }
