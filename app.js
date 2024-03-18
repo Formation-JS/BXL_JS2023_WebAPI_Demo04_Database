@@ -22,7 +22,10 @@ if(NODE_ENV === 'dev') {
     //? Méthode pour initialiser les objet de la DB  (basique)
     //db.sequelize.sync();
     
-    //? Méthode pour initialiser et modifier les objet de la DB 
+    //? Méthode pour initialiser et modifier les objet de la DB
+    //? - Modification autorisé sur les tables existantes
+    //db.sequelize.sync({ alter: true });
+    //? - Modification autorisé pour ajouter des attributs sur les tables existantes
     //db.sequelize.sync({ alter: { drop: false } });
     
     //? Méthode pour forcer les objet de la DB (Dernier recours - En DEV!) 
