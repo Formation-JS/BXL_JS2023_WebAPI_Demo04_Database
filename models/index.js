@@ -27,15 +27,15 @@ db.Actor = actorBuilder(sequelize);
 db.Movie = movieBuilder(sequelize);
 
 //* Ajouter les relations
-//? [One to Many] Genre - Movie
-db.Movie.hasMany(db.Genre, {
+//? [One to Many] Movie - Genre
+db.Genre.hasMany(db.Movie, {
     foreignKey: {
         allowNull: false
     },
     onUpdate: 'NO ACTION',
     onDelete: 'NO ACTION'
 });
-db.Genre.belongsTo(db.Movie);
+db.Movie.belongsTo(db.Genre);
 
 //? [Many to Many] Actor - Movie
 db.Movie.belongsToMany(db.Actor, { through: 'Movie_Actor' });
