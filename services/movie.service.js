@@ -77,6 +77,28 @@ const movieService = {
         };
     },
 
+    delete: async (movieId) => {
+
+        // Initialiser une transaction (Déactivation des auto-commit en DB)
+        const transaction = await db.sequelize.transaction();
+
+        // Delete en DB (fait partie de la transaction)
+        const nbRowDeleted = await db.Movie.destroy({
+            where: { id: movieId },
+            transaction
+        });
+
+        // Si le nombre d'élément supprimer ne correspond pas -> Annuler la transaction
+        if(nbRowDeleted !== 1) {
+            await transaction.rollback();
+            return false;
+        }
+
+        // Sinon -> Validation de la transaction
+        await transaction.commit();
+        return true;
+    },
+
     addActor : async (movieId, actorId) => {
 
         // Récuperation du film

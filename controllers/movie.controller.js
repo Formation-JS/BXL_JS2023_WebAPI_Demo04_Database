@@ -41,7 +41,16 @@ const movieController = {
     },
 
     delete: async (req, res) => {
-        res.sendStatus(501);
+        const movieId = parseInt(req.params.id);
+
+        const isDeleted = await movieService.delete(movieId);
+
+        if(!isDeleted) {
+            res.sendStatus(400);
+            return;
+        }
+
+        res.sendStatus(204);
     },
 
     addActor: async (req, res) => {
