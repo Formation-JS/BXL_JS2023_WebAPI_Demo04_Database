@@ -22,3 +22,12 @@ export class MovieDetailDTO {
         this.actors = actors
     }
 }
+
+export class MovieListDTO {
+
+    constructor({ id, title, genre }) {
+        this.id = id
+        this.title = title
+        this.genre = genre
+    }
+}

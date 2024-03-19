@@ -1,5 +1,5 @@
 import { ActorListDTO } from '../dto/actor.dto.js';
-import { MovieDataDTO, MovieDetailDTO } from '../dto/movie.dto.js';
+import { MovieDataDTO, MovieDetailDTO, MovieListDTO } from '../dto/movie.dto.js';
 import db from '../models/index.js';
 
 const movieService = {
@@ -58,6 +58,23 @@ const movieService = {
             genre: movie.genre?.name,
             actors: movie.actors.map(a => new ActorListDTO(a))
         });
+    },
+
+    getAll: async (offset, limit) => {
+
+        const { rows, count } = await db.Movie.findAndCountAll({
+            offset,
+            limit,
+            include: [
+                { model: db.Genre }
+            ],
+            attributes: ['id', 'title']
+        });
+
+        return {
+            count,
+            movies: rows.map(row => new MovieListDTO({...row.dataValues, genre: row.genre?.name}))
+        };
     },
 
     addActor : async (movieId, actorId) => {

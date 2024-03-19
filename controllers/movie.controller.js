@@ -17,7 +17,15 @@ const movieController = {
     },
 
     getAll: async (req, res) => {
-        res.sendStatus(501);
+        const { offset, limit } = req.pagination;
+
+        const data = await movieService.getAll(offset, limit);
+
+        res.status(200)
+            .json({
+                count: data.count,
+                results: data.movies
+            });
     },
 
     create: async (req, res) => {
@@ -45,7 +53,7 @@ const movieController = {
             await movieService.addActor(movieId, actorId);
             res.sendStatus(204);
         }
-        catch(error) {
+        catch (error) {
             res.sendStatus(400);
         }
     },
