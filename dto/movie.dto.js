@@ -1,18 +1,19 @@
 export class MovieDataDTO {
 
-    constructor({ id, title, releaseYear, duration, hasSubtitle, genre }) {
+    constructor({ id, title, releaseYear, duration, hasSubtitle, genre, tags }) {
         this.id = id
         this.title = title
         this.releaseYear = releaseYear
         this.duration = duration
         this.hasSubtitle = hasSubtitle
         this.genre = genre
+        this.tags = tags
     }
 }
 
 export class MovieDetailDTO {
 
-    constructor({ id, title, releaseYear, duration, hasSubtitle, genre, actors }) {
+    constructor({ id, title, releaseYear, duration, hasSubtitle, genre, actors, tags }) {
         this.id = id
         this.title = title
         this.releaseYear = releaseYear
@@ -20,6 +21,7 @@ export class MovieDetailDTO {
         this.hasSubtitle = hasSubtitle
         this.genre = genre
         this.actors = actors
+        this.tags = tags
     }
 }
 

@@ -1,5 +1,6 @@
 import { ActorListDTO } from '../dto/actor.dto.js';
 import { MovieDataDTO, MovieDetailDTO, MovieListDTO } from '../dto/movie.dto.js';
+import { TagDTO } from '../dto/tag.dto.js';
 import db from '../models/index.js';
 
 const movieService = {
@@ -32,11 +33,19 @@ const movieService = {
             releaseYear: movieData.releaseYear,
             duration: movieData.duration,
             hasSubtitle: movieData.hasSubtitle,
-            genreId: genreSelected.id
+            genreId: genreSelected.id,
+            tags: movieData.tags.map(tag => ({ name: tag }))
+        }, {
+            include: [db.Tag]
         });
 
+        console.log(movieCreated);
         // Mapping des données avec le DTO
-        return new MovieDataDTO({ ...movieCreated.dataValues, genre: genreSelected.name})
+        return new MovieDataDTO({ 
+            ...movieCreated.dataValues, 
+            genre: genreSelected.name, 
+            tags: movieCreated.tags.map(tag => new TagDTO(tag))
+        });
     },
 
     getById : async (movieId) => {
@@ -45,7 +54,8 @@ const movieService = {
         const movie = await db.Movie.findByPk(movieId, {
             include: [
                 { model: db.Genre },
-                { model: db.Actor }
+                { model: db.Actor },
+                { model: db.Tag }
             ]
         });
 
@@ -62,7 +72,8 @@ const movieService = {
             duration: movie.duration,
             hasSubtitle: movie.hasSubtitle,
             genre: movie.genre?.name,
-            actors: movie.actors.map(a => new ActorListDTO(a))
+            actors: movie.actors.map(a => new ActorListDTO(a)),
+            tags: movie.tags.map(t => new TagDTO(t))
         });
     },
 

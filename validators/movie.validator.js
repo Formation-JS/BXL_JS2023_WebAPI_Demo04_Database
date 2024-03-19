@@ -17,5 +17,6 @@ export const movieValidator = yup.object().shape({
             .typeError('Le genre est invalide')
             .trim()
             .required('Le genre est obligatoire')
-            .max(50, 'Le genre ne peux pas faire plus de 50 caracteres')
+            .max(50, 'Le genre ne peux pas faire plus de 50 caracteres'),
+    tags: yup.array().of(yup.string().min(2))
 });
