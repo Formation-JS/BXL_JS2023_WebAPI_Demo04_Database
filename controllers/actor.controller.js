@@ -1,3 +1,5 @@
+import { NotFoundErrorResponse } from '../response-objects/error.response.js';
+import { SuccessArrayResponse, SuccessObjectResponse } from '../response-objects/success.response.js';
 import actorService from '../services/actor.service.js';
 
 const actorController = {
@@ -8,12 +10,12 @@ const actorController = {
         const actor = await actorService.getById(actorId);
 
         if(!actor) {
-            res.sendStatus(404);
+            res.status(404).json(new NotFoundErrorResponse('Acteur non trouvé'));
             return;
         }
 
         res.status(200)
-           .json(actor);
+           .json(new SuccessObjectResponse(actor));
     },
 
     getAll: async (req, res) => {
@@ -21,10 +23,7 @@ const actorController = {
         const data = await actorService.getAll(offset, limit);
 
         res.status(200)
-            .json({
-                count: data.count,
-                results: data.actors
-            });
+            .json(new SuccessArrayResponse(data.actors, data.count));
     },
     
     create: async (req, res) => {
@@ -32,7 +31,7 @@ const actorController = {
 
         res.status(201)
            .location('/api/actor/'+actor.id)
-           .json(actor);
+           .json(new SuccessObjectResponse(actor, 201));
     }    
 }
 export default actorController;

@@ -1,3 +1,5 @@
+import { ErrorResponse, NotFoundErrorResponse } from '../response-objects/error.response.js';
+import { SuccessArrayResponse, SuccessObjectResponse } from '../response-objects/success.response.js';
 import movieService from '../services/movie.service.js';
 
 const movieController = {
@@ -8,12 +10,11 @@ const movieController = {
         const movie = await movieService.getById(movieId);
 
         if(!movie) {
-            res.sendStatus(404);
+            res.status(404).json(new NotFoundErrorResponse('Film non trouvé'));
             return;
         }
 
-        res.status(200)
-            .json(movie);
+        res.status(200).json(new SuccessObjectResponse(movie));
     },
 
     getAll: async (req, res) => {
@@ -22,10 +23,7 @@ const movieController = {
         const data = await movieService.getAll(offset, limit);
 
         res.status(200)
-            .json({
-                count: data.count,
-                results: data.movies
-            });
+            .json(new SuccessArrayResponse(data.movies, data.count));
     },
 
     create: async (req, res) => {
@@ -33,7 +31,7 @@ const movieController = {
 
         res.status(201)
             .location('/api/movie/' + movie.id)
-            .json(movie);
+            .json(new SuccessObjectResponse(movie, 201));
     },
 
     update: async (req, res) => {
@@ -46,7 +44,7 @@ const movieController = {
         const isDeleted = await movieService.delete(movieId);
 
         if(!isDeleted) {
-            res.sendStatus(400);
+            res.status(400).json(new ErrorResponse('Une erreur s\'est produite lors de la suppression !'))
             return;
         }
 
@@ -77,7 +75,6 @@ const movieController = {
             res.sendStatus(204)
         }
         catch (error) {
-            console.log(error);
             res.sendStatus(400);
         }
     },
