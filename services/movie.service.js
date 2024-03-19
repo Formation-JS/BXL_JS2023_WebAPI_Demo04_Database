@@ -41,12 +41,18 @@ const movieService = {
 
     getById : async (movieId) => {
 
+        // Rechercher le film en DB avec les informations du genre et d'acteur (Jointure)
         const movie = await db.Movie.findByPk(movieId, {
             include: [
                 { model: db.Genre },
                 { model: db.Actor }
             ]
         });
+
+        // Si aucun film trouvé -> null
+        if(!movie) {
+            return null;
+        }
 
         // Mapping du resultat vers le DTO
         return new MovieDetailDTO({
@@ -117,8 +123,26 @@ const movieService = {
             throw new Error('Actor not found');
         }
 
-        // Ajout du lien "Many to Many" entre les 2 entitès
+        // Ajouter la relation entre l'acteur et le film
+        //? - La méthode "addActor" / "addActors" permet d'ajouter les données dans la ManyToMany
+        //? - Cette méthode est automatiquement généré par sequelize
+        //? - Elle prend en parametres (object ou array) : L'entité, l'id de l'entité
         await movie.addActor(actor);
+    },
+
+    removeActor: async (movieId, actorId) => {
+
+        // Récuperation du film
+        const movie = await db.Movie.findByPk(movieId);
+        if(!movie) {
+            throw new Error('Movie not found');
+        }
+
+        // Supprimer la relation entre l'acteur et le film
+        //? - La méthode "removeActor" / "removeActors" permet d'ajouter les données dans la ManyToMany
+        //? - Cette méthode est automatiquement généré par sequelize
+        //? - Elle prend en parametres (object ou array) : L'entité, l'id de l'entité
+        await movie.removeActor(actorId);
     }
 };
 

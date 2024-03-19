@@ -68,7 +68,18 @@ const movieController = {
     },
 
     removeActor: async (req, res) => {
-        res.sendStatus(501);
+        // /:id([0-9]+)/removeActor/:actorId([0-9]+)
+        const movieId =parseInt(req.params.id);
+        const actorId =parseInt(req.params.actorId);
+
+        try {
+            await movieService.removeActor(movieId, actorId);
+            res.sendStatus(204)
+        }
+        catch (error) {
+            console.log(error);
+            res.sendStatus(400);
+        }
     },
 }
 export default movieController;
